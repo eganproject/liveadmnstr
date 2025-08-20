@@ -116,7 +116,7 @@
                 <div class="text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check mx-auto mb-6 opacity-80"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
                     <h1 class="text-4xl font-bold tracking-tight">Selamat Datang Kembali</h1>
-                    <p class="mt-4 text-slate-300 max-w-sm">Masuk untuk mengakses dasbor Anda dan kelola semua aktivitas Anda di satu tempat.</p>
+                    <p class="mt-4 text-slate-300 max-w-sm">Masuk untuk mengakses sistem informasi live streaming dan kelola semua aktivitas Anda di satu tempat.</p>
                 </div>
             </div>
 
@@ -125,7 +125,7 @@
                 <div class="form-container w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-bold text-slate-800 dark:text-white">Sign In</h2>
-                        <p class="text-slate-500 dark:text-slate-400 mt-2">Silakan masuk untuk melanjutkan.</p>
+                        <p class="text-slate-500 dark:text-slate-400 mt-2">Selamat beraktivitas.</p>
                     </div>
 
                     <form method="POST" action="{{ route('login') }}" class="space-y-6">
