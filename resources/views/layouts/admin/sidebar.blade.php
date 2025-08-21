@@ -2,8 +2,8 @@
 <aside
     class="w-64 flex-shrink-0 bg-white border-r border-gray-200 flex-col flex fixed inset-y-0 left-0 z-50 transform -translate-x-full md:relative md:translate-x-0">
     <div class="h-16 flex items-center justify-center border-b border-gray-200 px-4 flex-shrink-0">
-        <i data-lucide="shield-check" class="w-8 h-8 text-black"></i>
-        <h1 class="text-xl font-bold text-gray-800 ml-2 sidebar-logo-text">AdminPanel</h1>
+        <img src="{{ asset('logo/cok-logo.png') }}" alt="AdminPanel" class="h-10 w-10">
+        <h1 class="text-xl font-bold text-gray-800 ml-2 sidebar-logo-text">CahayaOptima</h1>
     </div>
     <nav class="flex-1 overflow-y-auto pt-4">
         <a href="/admin" class="flex items-center px-6 py-3 text-gray-700 {{ Request::is('admin') ? 'bg-gray-100 font-semibold' : '' }}">

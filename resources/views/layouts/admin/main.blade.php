@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin Modern</title>
-    
+    {{-- header icon --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/cok.png') }}">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -46,12 +47,20 @@
         .select2-dropdown { border-color: #d1d5db; border-radius: 0.375rem; }
         .select2-container .error + .select2-container .select2-selection--single { border-color: #ef4444; }
         aside, .main-content-wrapper { transition: all 0.3s ease-in-out; }
+                }
+        /* Logo switching */
+        .sidebar-logo-icon { display: none; }
+
         @media (min-width: 768px) {
             .sidebar-collapsed aside { width: 5rem; }
             .sidebar-collapsed .sidebar-text, .sidebar-collapsed .sidebar-logo-text, .sidebar-collapsed .sidebar-dropdown-icon { display: none; }
             .sidebar-collapsed #master-data-submenu { display: none !important; }
             .sidebar-collapsed .px-6 { justify-content: center; }
             .sidebar-collapsed .px-6 .ml-4 { margin-left: 0; }
+
+            /* Logo switching for collapsed sidebar */
+            .sidebar-collapsed .sidebar-logo-full { display: none; }
+            .sidebar-collapsed .sidebar-logo-icon { display: block; }
         }
         /* Custom styles for Flatpickr inputs to ensure consistent height */
         .flatpickr-input {

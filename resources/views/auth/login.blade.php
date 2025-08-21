@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | {{ config('app.name', 'Laravel') }}</title>
+    <title>Login | {{ config('app.name', 'COK') }}</title>
+    
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/cok.png') }}">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,7 +116,7 @@
             <!-- Kolom Kiri: Visual/Branding dengan efek kaca -->
             <div class="hidden lg:flex flex-col justify-center items-center p-12 text-white bg-black/20 backdrop-blur-md border-r border-white/10">
                 <div class="text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check mx-auto mb-6 opacity-80"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <img src="{{ asset('logo/cok.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-6">
                     <h1 class="text-4xl font-bold tracking-tight">Selamat Datang Kembali</h1>
                     <p class="mt-4 text-slate-300 max-w-sm">Masuk untuk mengakses sistem informasi live streaming dan kelola semua aktivitas Anda di satu tempat.</p>
                 </div>
