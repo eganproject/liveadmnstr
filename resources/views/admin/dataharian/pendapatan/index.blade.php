@@ -32,9 +32,29 @@
             <a href="{{ route('admin.dataharian.pendapatan-harian.create') }}" class="bg-black text-white px-5 py-2.5 rounded-md text-xs font-semibold hover:bg-gray-800">Tambah Data</a>
         </div>
 
-        <div class="mb-4">
-            <label for="filter_tanggal" class="block text-xs font-medium text-gray-600 mb-1">Filter Tanggal:</label>
-            <input type="text" id="filter_tanggal" class="w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-date-filter">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+                <label for="filter_tanggal" class="block text-xs font-medium text-gray-600 mb-1">Filter Tanggal:</label>
+                <input type="text" id="filter_tanggal" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-date-filter">
+            </div>
+            <div>
+                <label for="filter_toko" class="block text-xs font-medium text-gray-600 mb-1">Filter Toko:</label>
+                <select id="filter_toko" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm select2-filter">
+                    <option value="">Semua Toko</option>
+                    @foreach($tokos as $toko)
+                        <option value="{{ $toko->id }}">{{ $toko->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="filter_karyawan" class="block text-xs font-medium text-gray-600 mb-1">Filter Karyawan:</label>
+                <select id="filter_karyawan" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm select2-filter">
+                    <option value="">Semua Karyawan</option>
+                    @foreach($karyawans as $karyawan)
+                        <option value="{{ $karyawan->id }}">{{ $karyawan->name }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -76,6 +96,9 @@
             defaultDate: today
         });
 
+        // Initialize Select2 for filters
+        $('.select2-filter').select2();
+
         var pendapatanTable = $('#pendapatan-table').DataTable({
             processing: true,
             serverSide: true,
@@ -83,6 +106,8 @@
                 url: '{{ route("admin.dataharian.pendapatan-harian.index") }}',
                 data: function (d) {
                     d.filter_tanggal = $('#filter_tanggal').val();
+                    d.filter_toko_id = $('#filter_toko').val();
+                    d.filter_karyawan_id = $('#filter_karyawan').val();
                 }
             },
             columns: [
@@ -107,8 +132,8 @@
             }
         });
 
-        // Reload DataTable when date filter changes
-        $('#filter_tanggal').on('change', function() {
+        // Reload DataTable when filter changes
+        $('#filter_tanggal, #filter_toko, #filter_karyawan').on('change', function() {
             pendapatanTable.ajax.reload();
         });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\DataHarian;
 use App\Http\Controllers\Controller;
 use App\Models\Karyawan;
 use App\Models\PendapatanHarian;
+use App\Models\Toko;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -19,6 +20,18 @@ class PendapatanHarianController extends Controller
             if ($request->has('filter_tanggal') && !empty($request->input('filter_tanggal'))) {
                 $filterDate = $request->input('filter_tanggal');
                 $data->whereDate('tanggal', $filterDate);
+            }
+
+            // Apply store filter
+            if ($request->has('filter_toko_id') && !empty($request->input('filter_toko_id'))) {
+                $filterTokoId = $request->input('filter_toko_id');
+                $data->where('toko_id', $filterTokoId);
+            }
+
+            // Apply employee filter
+            if ($request->has('filter_karyawan_id') && !empty($request->input('filter_karyawan_id'))) {
+                $filterKaryawanId = $request->input('filter_karyawan_id');
+                $data->where('karyawan_id', $filterKaryawanId);
             }
 
             // Apply search filter
@@ -69,7 +82,9 @@ class PendapatanHarianController extends Controller
                 ->make(true);
         }
 
-        return view('admin.dataharian.pendapatan.index');
+        $karyawans = Karyawan::all();
+        $tokos = Toko::all();
+        return view('admin.dataharian.pendapatan.index', compact('karyawans', 'tokos'));
     }
 
     public function create()
