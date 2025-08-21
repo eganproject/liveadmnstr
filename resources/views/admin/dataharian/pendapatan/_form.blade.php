@@ -1,13 +1,13 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
         <label for="tanggal" class="block text-xs font-medium text-gray-600 mb-1">Tanggal</label>
-        <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm" id="tanggal" name="tanggal" value="{{ isset($pendapatanHarian) ? $pendapatanHarian->tanggal : old('tanggal') }}">
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-date" id="tanggal" name="tanggal" value="{{ isset($pendapatanHarian) ? $pendapatanHarian->tanggal : old('tanggal') }}">
     </div>
     <div>
         <label for="karyawan_id" class="block text-xs font-medium text-gray-600 mb-1">Karyawan</label>
-        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm" id="karyawan_id" name="karyawan_id">
+        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm select2-karyawan" id="karyawan_id" name="karyawan_id">
             @foreach($karyawans as $karyawan)
-                <option value="{{ $karyawan->id }}" {{ (isset($pendapatanHarian) && $pendapatanHarian->karyawan_id == $karyawan->id) ? 'selected' : '' }}>{{ $karyawan->name }}</option>
+                <option value="{{ $karyawan->id }}" {{ (isset($pendapatanHarian) && $pendapatanHarian->karyawan_id == $karyawan->id) ? 'selected' : (old('karyawan_id') == $karyawan->id ? 'selected' : '') }}>{{ $karyawan->name }}</option>
             @endforeach
         </select>
     </div>
@@ -37,11 +37,11 @@
     </div>
     <div>
         <label for="jam_mulai" class="block text-xs font-medium text-gray-600 mb-1">Jam Mulai</label>
-        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm" id="jam_mulai" name="jam_mulai" value="{{ isset($pendapatanHarian) ? \Carbon\Carbon::parse($pendapatanHarian->jam_mulai)->format('H:i') : old('jam_mulai') }}">
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-time" id="jam_mulai" name="jam_mulai" value="{{ isset($pendapatanHarian) ? \Carbon\Carbon::parse($pendapatanHarian->jam_mulai)->format('H:i') : old('jam_mulai') }}">
     </div>
     <div>
         <label for="jam_selesai" class="block text-xs font-medium text-gray-600 mb-1">Jam Selesai</label>
-        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm" id="jam_selesai" name="jam_selesai" value="{{ isset($pendapatanHarian) ? \Carbon\Carbon::parse($pendapatanHarian->jam_selesai)->format('H:i') : old('jam_selesai') }}">
+        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-time" id="jam_selesai" name="jam_selesai" value="{{ isset($pendapatanHarian) ? \Carbon\Carbon::parse($pendapatanHarian->jam_selesai)->format('H:i') : old('jam_selesai') }}">
     </div>
     <div>
         <label for="deskripsi" class="block text-xs font-medium text-gray-600 mb-1">Deskripsi</label>
@@ -53,6 +53,7 @@
 </div>
 
 <script>
+    // Move formatRupiah function outside DOMContentLoaded to make it globally accessible
     function formatRupiah(angka, prefix) {
         var number_string = angka.value.replace(/[^,\d]/g, '').toString(),
             split = number_string.split(','),
@@ -69,15 +70,36 @@
         angka.value = prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 
-    document.querySelector('form').addEventListener('submit', function() {
-        var jumlahPenjualanInput = document.getElementById('jumlah_penjualan');
-        jumlahPenjualanInput.value = jumlahPenjualanInput.value.replace(/[^0-9]/g, '');
-    });
-
-    // Initial formatting if value exists
     document.addEventListener('DOMContentLoaded', function() {
+        // Flatpickr initialization
+        flatpickr(".flatpickr-date", {
+            dateFormat: "Y-m-d",
+        });
+
+        flatpickr(".flatpickr-time", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: true
+        });
+
+        // Select2 initialization
+        $('.select2-karyawan').select2();
+
+        // Ensure the form exists before adding event listener
+        var formElement = document.querySelector('form');
+        if (formElement) {
+            formElement.addEventListener('submit', function() {
+                var jumlahPenjualanInput = document.getElementById('jumlah_penjualan');
+                if (jumlahPenjualanInput) { // Check if element exists
+                    jumlahPenjualanInput.value = jumlahPenjualanInput.value.replace(/[^0-9]/g, '');
+                }
+            });
+        }
+
+        // Initial formatting if value exists
         var jumlahPenjualanInput = document.getElementById('jumlah_penjualan');
-        if (jumlahPenjualanInput.value) {
+        if (jumlahPenjualanInput && jumlahPenjualanInput.value) {
             formatRupiah(jumlahPenjualanInput, 'Rp. ');
         }
     });

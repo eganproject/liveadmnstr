@@ -19,6 +19,9 @@
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -50,6 +53,13 @@
             .sidebar-collapsed .px-6 { justify-content: center; }
             .sidebar-collapsed .px-6 .ml-4 { margin-left: 0; }
         }
+        /* Custom styles for Flatpickr inputs to ensure consistent height */
+        .flatpickr-input {
+            height: 42px !important; /* Match select2 height */
+            line-height: 40px !important; /* Match select2 line-height */
+            padding-top: 0.5rem !important; /* Ensure consistent padding */
+            padding-bottom: 0.5rem !important; /* Ensure consistent padding */
+        }
     </style>
 </head>
 <body class="text-sm text-gray-800">
@@ -78,6 +88,12 @@
     </div>
 
     @include('layouts.admin.footer')
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     @stack('scripts')
 </body>

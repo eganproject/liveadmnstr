@@ -34,7 +34,7 @@
 
         <div class="mb-4">
             <label for="filter_tanggal" class="block text-xs font-medium text-gray-600 mb-1">Filter Tanggal:</label>
-            <input type="date" id="filter_tanggal" class="w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm">
+            <input type="text" id="filter_tanggal" class="w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-black text-sm flatpickr-date-filter">
         </div>
 
         <div class="overflow-x-auto">
@@ -69,7 +69,12 @@
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         today = yyyy + '-' + mm + '-' + dd;
-        $('#filter_tanggal').val(today);
+
+        // Initialize Flatpickr for date filter
+        flatpickr("#filter_tanggal", {
+            dateFormat: "Y-m-d",
+            defaultDate: today
+        });
 
         var pendapatanTable = $('#pendapatan-table').DataTable({
             processing: true,
