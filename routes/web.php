@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DataHarian\PendapatanHarianController;
 use App\Http\Controllers\Admin\Masterdata\JabatanController;
 use App\Http\Controllers\Admin\Masterdata\KaryawanController;
 use App\Http\Controllers\Admin\Masterdata\TokoController;
+use App\Http\Controllers\Admin\Reports\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
@@ -20,6 +21,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::group(['prefix' => 'dataharian'], function(){
         Route::resource('pendapatan-harian', PendapatanHarianController::class)->names('admin.dataharian.pendapatan-harian');
+    });
+
+    // New Reports Route
+    Route::group(['prefix' => 'reports'], function() {
+        Route::get('pendapatan', [ReportController::class, 'index'])->name('admin.reports.pendapatan.index');
     });
 
 });

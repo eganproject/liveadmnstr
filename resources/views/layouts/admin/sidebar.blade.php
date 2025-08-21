@@ -32,12 +32,27 @@
                 </a>
             </div>
         </div>
-         <a href="/admin" class="flex items-center px-6 py-3 text-gray-700 {{ Request::is('admin/dataharian*') ? 'bg-gray-100 font-semibold' : '' }}">
+        <a href="{{ route('admin.dataharian.pendapatan-harian.index') }}" class="flex items-center px-6 py-3 text-gray-700 {{ Request::is('admin/dataharian*') ? 'bg-gray-100 font-semibold' : '' }}">
             <i data-lucide="file-text" class="w-5 h-5"></i>
             <span class="ml-4 sidebar-text">Data Harian</span>
         </a>
-        <!-- Data Harian Dropdown -->
-        
+
+        <!-- Laporan Dropdown -->
+        <div>
+            <a href="#" id="laporan-toggle"
+                class="flex items-center justify-between px-6 py-3 text-gray-600 hover:bg-gray-50 {{ Request::is('admin/reports*') ? '' : '' }}">
+                <div class="flex items-center">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                    <span class="ml-4 sidebar-text">Laporan</span>
+                </div>
+                <i data-lucide="chevron-down" class="w-4 h-4 sidebar-dropdown-icon transition-transform {{ Request::is('admin/reports*') ? 'rotate-180' : '' }}"></i>
+            </a>
+            <div id="laporan-submenu" class="{{ Request::is('admin/reports*') ? '' : 'hidden' }}">
+                <a href="{{ route('admin.reports.pendapatan.index') }}" class="flex items-center py-2 pl-12 pr-6 text-gray-600 hover:bg-gray-100 {{ Request::is('admin/reports/pendapatan*') ? 'bg-gray-100 font-semibold' : '' }}">
+                    <span class="sidebar-text">Laporan Pendapatan</span>
+                </a>
+            </div>
+        </div>
        
     </nav>
 </aside>
@@ -55,16 +70,16 @@
             masterDataIcon.classList.toggle('rotate-180');
         });
 
-        const dataHarianToggle = document.getElementById('data-harian-toggle');
-        const dataHarianSubmenu = document.getElementById('data-harian-submenu');
-        const dataHarianIcon = dataHarianToggle.querySelector('.sidebar-dropdown-icon');
+        // Add this new part for Laporan dropdown
+        const laporanToggle = document.getElementById('laporan-toggle');
+        const laporanSubmenu = document.getElementById('laporan-submenu');
+        const laporanIcon = laporanToggle.querySelector('.sidebar-dropdown-icon');
 
-        dataHarianToggle.addEventListener('click', function (e) {
+        laporanToggle.addEventListener('click', function (e) {
             e.preventDefault();
-            dataHarianSubmenu.classList.toggle('hidden');
-            dataHarianIcon.classList.toggle('rotate-180');
+            laporanSubmenu.classList.toggle('hidden');
+            laporanIcon.classList.toggle('rotate-180');
         });
     });
 </script>
 @endpush
-
