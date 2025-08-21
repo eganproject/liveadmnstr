@@ -10,10 +10,6 @@
             <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
             <span class="ml-4 sidebar-text">Dashboard</span>
         </a>
-        <a href="#users" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50 {{ Request::is('admin/users*') ? 'bg-gray-100 font-semibold' : '' }}">
-            <i data-lucide="users" class="w-5 h-5"></i>
-            <span class="ml-4 sidebar-text">Manajemen User</span>
-        </a>
         <!-- Master Data Dropdown -->
         <div>
             <a href="#" id="master-data-toggle"
@@ -36,19 +32,18 @@
                 </a>
             </div>
         </div>
-        <a href="#forms" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
+         <a href="/admin" class="flex items-center px-6 py-3 text-gray-700 {{ Request::is('admin/dataharian*') ? 'bg-gray-100 font-semibold' : '' }}">
             <i data-lucide="file-text" class="w-5 h-5"></i>
-            <span class="ml-4 sidebar-text">Contoh Form</span>
+            <span class="ml-4 sidebar-text">Data Harian</span>
         </a>
-        <a href="#dynamic-forms" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50">
-            <i data-lucide="file-plus-2" class="w-5 h-5"></i>
-            <span class="ml-4 sidebar-text">Form Dinamis</span>
-        </a>
+        <!-- Data Harian Dropdown -->
+        
+       
     </nav>
 </aside>
 
 @push('scripts')
-{{-- <script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         const masterDataToggle = document.getElementById('master-data-toggle');
         const masterDataSubmenu = document.getElementById('master-data-submenu');
@@ -59,7 +54,17 @@
             masterDataSubmenu.classList.toggle('hidden');
             masterDataIcon.classList.toggle('rotate-180');
         });
+
+        const dataHarianToggle = document.getElementById('data-harian-toggle');
+        const dataHarianSubmenu = document.getElementById('data-harian-submenu');
+        const dataHarianIcon = dataHarianToggle.querySelector('.sidebar-dropdown-icon');
+
+        dataHarianToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            dataHarianSubmenu.classList.toggle('hidden');
+            dataHarianIcon.classList.toggle('rotate-180');
+        });
     });
-</script> --}}
+</script>
 @endpush
 

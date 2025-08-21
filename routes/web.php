@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DataHarian\PendapatanHarianController;
 use App\Http\Controllers\Admin\Masterdata\JabatanController;
 use App\Http\Controllers\Admin\Masterdata\KaryawanController;
 use App\Http\Controllers\Admin\Masterdata\TokoController;
@@ -15,6 +16,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::resource('jabatan', JabatanController::class)->names('admin.masterdata.jabatan');
         Route::resource('toko', TokoController::class)->names('admin.masterdata.toko');
         Route::resource('karyawan', KaryawanController::class)->names('admin.masterdata.karyawan');
+    });
+
+    Route::group(['prefix' => 'dataharian'], function(){
+        Route::resource('pendapatan-harian', PendapatanHarianController::class)->names('admin.dataharian.pendapatan-harian');
     });
 
 });
