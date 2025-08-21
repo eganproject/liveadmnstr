@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin Modern</title>
     {{-- header icon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo/cok.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('public/logo/cok.png') }}">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     

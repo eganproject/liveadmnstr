@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | {{ config('app.name', 'COK') }}</title>
     
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo/cok.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('public/logo/cok.png') }}">
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,7 +116,7 @@
             <!-- Kolom Kiri: Visual/Branding dengan efek kaca -->
             <div class="hidden lg:flex flex-col justify-center items-center p-12 text-white bg-black/20 backdrop-blur-md border-r border-white/10">
                 <div class="text-center">
-                    <img src="{{ asset('logo/cok.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-6">
+                    <img src="{{ asset('public/logo/cok.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-6">
                     <h1 class="text-4xl font-bold tracking-tight">Selamat Datang Kembali</h1>
                     <p class="mt-4 text-slate-300 max-w-sm">Masuk untuk mengakses sistem informasi live streaming dan kelola semua aktivitas Anda di satu tempat.</p>
                 </div>
