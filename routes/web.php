@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->get('/admin', function () {
-    return view('admin.dashboard.index');
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('', function () {
+        return view('admin.dashboard.index');
+    });
+});
+Route::get('/', function () {
+    return redirect('/login');
 });
 
 Route::auth(['register' => false]);
