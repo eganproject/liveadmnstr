@@ -8,6 +8,7 @@ use App\Models\Karyawan;
 use App\Models\Toko;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\CarbonPeriod;
 
 class ReportController extends Controller
 {
@@ -124,13 +125,21 @@ class ReportController extends Controller
 
             // Daily Income for Line Chart
             $dailyIncomeData = $query->clone()
-                                     ->select('tanggal', DB::raw('SUM(jumlah_penjualan) as total_daily_income'))
-                                     ->groupBy('tanggal')
-                                     ->orderBy('tanggal')
-                                     ->get();
+                                     ->select(DB::raw('DATE(tanggal) as date'), DB::raw('SUM(jumlah_penjualan) as total_daily_income'))
+                                     ->groupBy('date')
+                                     ->orderBy('date')
+                                     ->get()
+                                     ->keyBy('date');
 
-            $dailyIncomeLabels = $dailyIncomeData->pluck('tanggal')->toArray();
-            $dailyIncomeValues = $dailyIncomeData->pluck('total_daily_income')->toArray();
+            $period = CarbonPeriod::create($startDate, $endDate);
+            $dailyIncomeLabels = [];
+            $dailyIncomeValues = [];
+
+            foreach ($period as $date) {
+                $formattedDate = $date->format('Y-m-d');
+                $dailyIncomeLabels[] = $formattedDate;
+                $dailyIncomeValues[] = $dailyIncomeData->get($formattedDate)->total_daily_income ?? 0;
+            }
 
             // Session Income for Bar Chart
             $sessionIncomeData = $query->clone()

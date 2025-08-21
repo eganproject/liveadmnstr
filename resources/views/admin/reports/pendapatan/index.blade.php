@@ -84,6 +84,11 @@
                 </div>
             </div>
 
+            <h4 class="text-md font-semibold text-gray-700 mt-6 mb-3">Grafik Pendapatan Harian</h4>
+            <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                <canvas id="dailyIncomeChart"></canvas>
+            </div>
+
             <h4 class="text-md font-semibold text-gray-700 mt-6 mb-3">Pendapatan per Karyawan</h4>
             <div class="overflow-x-auto bg-gray-50 p-4 rounded-lg shadow-sm">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -119,13 +124,15 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $(document).ready(function() {
+        let dailyIncomeChart = null;
+
         // Flatpickr for date range
         flatpickr("#report_date_range", {
             mode: "range",
             dateFormat: "Y-m-d",
-            // Default to last 7 days or a reasonable default
             defaultDate: [new Date().setDate(new Date().getDate() - 6), new Date()]
         });
 
@@ -133,7 +140,7 @@
             var dateRange = $('#report_date_range').val();
             var dates = dateRange.split(' to ');
             var startDate = dates[0];
-            var endDate = dates[1] || dates[0]; // If only one date selected, use it as end date
+            var endDate = dates.length > 1 ? dates[1] : dates[0];
 
             $.ajax({
                 url: '{{ route("admin.reports.pendapatan.index") }}',
@@ -143,7 +150,7 @@
                     end_date: endDate
                 },
                 success: function(response) {
-                    // Update summary report results
+                    // Update summary cards
                     $('#total_income').text(response.total_income);
                     $('#total_livestreaming').text(response.total_transactions);
                     $('#total_likes').text(response.total_likes);
@@ -155,9 +162,58 @@
                     $('#top_session_income').text(response.top_session_income);
                     $('#avg_employee_income').text(response.avg_employee_income);
 
+                    // Update Daily Income Chart
+                    if (dailyIncomeChart) {
+                        dailyIncomeChart.destroy();
+                    }
+                    const ctx = document.getElementById('dailyIncomeChart').getContext('2d');
+                    dailyIncomeChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: response.daily_income_labels,
+                            datasets: [{
+                                label: 'Total Pendapatan Harian',
+                                data: response.daily_income_values,
+                                backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                                borderColor: 'rgba(0, 0, 0, 1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.y !== null) {
+                                                label += 'Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
                     // Update income per employee table
                     var employeeTableBody = $('#income_per_employee_body');
-                    employeeTableBody.empty(); // Clear previous data
+                    employeeTableBody.empty();
                     if (response.income_per_employee.length > 0) {
                         $.each(response.income_per_employee, function(index, item) {
                             var row = '<tr>' +
@@ -167,12 +223,12 @@
                             employeeTableBody.append(row);
                         });
                     } else {
-                        employeeTableBody.append('<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada data pendapatan per karyawan.</td></tr>');
+                        employeeTableBody.append('<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada data.</td></tr>');
                     }
 
                     // Update income per store table
                     var storeTableBody = $('#income_per_store_body');
-                    storeTableBody.empty(); // Clear previous data
+                    storeTableBody.empty();
                     if (response.income_per_store.length > 0) {
                         $.each(response.income_per_store, function(index, item) {
                             var row = '<tr>' +
@@ -182,16 +238,15 @@
                             storeTableBody.append(row);
                         });
                     } else {
-                        storeTableBody.append('<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada data pendapatan per toko.</td></tr>');
+                        storeTableBody.append('<tr><td colspan="2" class="px-6 py-4 text-center text-gray-500">Tidak ada data.</td></tr>');
                     }
-
                 },
                 error: function(xhr) {
                     console.error('Error fetching report data:', xhr.responseText);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error!',
-                        text: 'Gagal mengambil data laporan.',
+                        title: 'Gagal!',
+                        text: 'Tidak dapat memuat data laporan.',
                     });
                 }
             });
