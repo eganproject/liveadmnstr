@@ -27,6 +27,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         Route::get('pendapatan', [ReportController::class, 'index'])->name('pendapatan.index');
     });
 
+    Route::get('karyawan-toko/{karyawan}', [PendapatanHarianController::class, 'getTokoByKaryawan'])->name('karyawan.get-toko');
 });
 Route::get('/', function () {
     return redirect('/login');

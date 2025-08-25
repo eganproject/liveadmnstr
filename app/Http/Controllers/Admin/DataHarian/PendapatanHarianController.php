@@ -90,7 +90,8 @@ class PendapatanHarianController extends Controller
     public function create()
     {
         $karyawans = Karyawan::all();
-        return view('admin.dataharian.pendapatan.create', compact('karyawans'));
+        $tokos = Toko::all();
+        return view('admin.dataharian.pendapatan.create', compact('karyawans', 'tokos'));
     }
 
     public function store(Request $request)
@@ -99,6 +100,7 @@ class PendapatanHarianController extends Controller
             $request->validate([
                 'tanggal' => 'required|date',
                 'karyawan_id' => 'required|exists:karyawans,id',
+                'toko_id' => 'required|exists:tokos,id',
                 'jumlah_like' => 'required|integer',
                 'jumlah_komentar' => 'required|integer',
                 'jumlah_ditonton' => 'required|integer',
@@ -107,9 +109,6 @@ class PendapatanHarianController extends Controller
                 'jam_mulai' => 'required|date_format:H:i',
                 'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
             ]);
-
-            $karyawan = Karyawan::where('id', $request->karyawan_id)->first();
-            $request['toko_id'] = $karyawan->toko_id;
 
             $jumlahPenjualan = str_replace(['Rp.', '.', ','], '', $request->jumlah_penjualan);
             $request->merge(['jumlah_penjualan' => (int) $jumlahPenjualan]);
@@ -132,7 +131,8 @@ class PendapatanHarianController extends Controller
     public function edit(PendapatanHarian $pendapatanHarian)
     {
         $karyawans = Karyawan::all();
-        return view('admin.dataharian.pendapatan.edit', compact('pendapatanHarian', 'karyawans'));
+        $tokos = Toko::all();
+        return view('admin.dataharian.pendapatan.edit', compact('pendapatanHarian', 'karyawans', 'tokos'));
     }
 
     public function update(Request $request, PendapatanHarian $pendapatanHarian)
@@ -140,6 +140,7 @@ class PendapatanHarianController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'karyawan_id' => 'required|exists:karyawans,id',
+            'toko_id' => 'required|exists:tokos,id',
             'jumlah_like' => 'required|integer',
             'jumlah_komentar' => 'required|integer',
             'jumlah_ditonton' => 'required|integer',
@@ -148,8 +149,6 @@ class PendapatanHarianController extends Controller
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);
-        $karyawan = Karyawan::where('id', $request->karyawan_id)->first();
-        $request['toko_id'] = $karyawan->toko_id;
 
         $jumlahPenjualan = str_replace(['Rp.', '.', ','], '', $request->jumlah_penjualan);
         $request->merge(['jumlah_penjualan' => (int) $jumlahPenjualan]);
@@ -166,5 +165,10 @@ class PendapatanHarianController extends Controller
 
         return redirect()->route('admin.dataharian.pendapatan-harian.index')
             ->with('success', 'Pendapatan Harian deleted successfully');
+    }
+
+    public function getTokoByKaryawan(Karyawan $karyawan)
+    {
+        return response()->json(['toko_id' => $karyawan->toko_id]);
     }
 }
